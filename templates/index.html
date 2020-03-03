@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block body %}
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+            {{ message }}
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% if 'edit' in request.url %}
+
+    <form action="/update" method="post">
+    <table>
+    <tr>
+        <td>state</td>
+        <td><input type="text" name="state" id="" value="{{update_this.name}}"></td>
+    </tr>
+    <tr>
+        <input type="hidden" name="hiddenid" value='{{update_this.id}}'>
+        <td colspan="2"><input type="submit" value="submit"></td>
+    </tr>
+   
+    </table>
+    </form>
+    {% else %}
+    <form action="/insert" method="post">
+        <table>
+            <tr>
+                <td>Enter State</td>
+                <td><input type="text" name="state" id="" value=""></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+    {% endif %}
+    <table>
+        <tr>
+            <td>Serial Number</td>
+            <td>States</td>
+        </tr>
+        {% for state in all_states %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ state.name }}</td>
+                <td align="center"><a href = "{{ url_for('dataRemove', dprimary=state.id ) }}">Delete</a></td>
+                <td align="center"><a href = "{{ url_for('dataUpdate', uprimary=state.id ) }}">Edit</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
